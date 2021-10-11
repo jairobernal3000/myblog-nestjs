@@ -1,6 +1,12 @@
 import { PostCategory } from '../enums';
-import { IsArray, IsBoolean, IsEnum, IsString } from 'class-validator';
-import { EnumToString } from '../../helpers/enumToString';
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { EnumToString } from '../../common/helpers/enumToString';
 
 export class CreatePostDto {
   @IsString()
@@ -26,6 +32,7 @@ export class CreatePostDto {
   @IsString({ each: true })
   tags: string[];
 
+  @IsOptional()
   @IsBoolean()
   status: boolean;
 }

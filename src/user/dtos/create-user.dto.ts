@@ -1,10 +1,14 @@
 import {
+  IsArray,
   IsEmail,
+  IsEnum,
   IsOptional,
   IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { AppRoles } from '../../app.roles';
+import { EnumToString } from '../../common/helpers/enumToString';
 
 export class CreateUserDto {
   @IsOptional()
@@ -24,4 +28,11 @@ export class CreateUserDto {
   @MinLength(8)
   @MaxLength(128)
   password: string;
+
+  @IsArray()
+  @IsEnum(AppRoles, {
+    each: true,
+    message: `must be a valid role value, ${EnumToString(AppRoles)}`,
+  })
+  roles: string[];
 }

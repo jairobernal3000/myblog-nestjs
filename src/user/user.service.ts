@@ -8,6 +8,11 @@ import { User } from './entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto, EditUserDto } from './dtos';
 
+export interface UserFindOne {
+  id?: number;
+  email?: string;
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -19,9 +24,14 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async getOne(id: number) {
-    const user = await this.userRepository.findOne(id);
-    if (!user) throw new NotFoundException('user does not exists');
+  async getOne(id: number, userEntity?: User) {
+    const user = await this.userRepository
+      .findOne(id)
+      .then((u) =>
+        !userEntity ? u : !!u && userEntity.id === u.id ? u : null,
+      );
+    if (!user)
+      throw new NotFoundException('user does not exists or unauthorized');
     return user;
   }
 
@@ -35,15 +45,23 @@ export class UserService {
     return user;
   }
 
-  async editOne(id: number, dto: EditUserDto) {
-    const user = await this.getOne(id);
+  async editOne(id: number, dto: EditUserDto, userEntity?: User) {
+    const user = await this.getOne(id, userEntity);
     if (!user) throw new NotFoundException('User does not exist');
     const editedUser = Object.assign(user, dto);
     return await this.userRepository.save(editedUser);
   }
 
-  async deleteOne(id: number) {
-    const user = await this.getOne(id);
+  async deleteOne(id: number, userEntity?: User) {
+    const user = await this.getOne(id, userEntity);
     return await this.userRepository.remove(user);
+  }
+
+  async findOne(data: UserFindOne) {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .where(data)
+      .addSelect('user.password')
+      .getOne();
   }
 }
