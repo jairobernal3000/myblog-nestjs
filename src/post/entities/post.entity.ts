@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../user/entities';
 
@@ -34,8 +35,11 @@ export class Post {
   @Column({ type: 'bool', default: true })
   status: boolean;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.posts, { eager: true })
   @JoinColumn({ name: 'author' })

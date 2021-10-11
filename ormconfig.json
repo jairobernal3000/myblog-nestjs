@@ -1,0 +1,23 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "Sistemas1",
+  "database": "myblog_db",
+  "entities": [
+    "/Users/jairo/Documents/Fuentes/NodeJS/NestJS/myblog/dist/**/**/*entity{.ts,.js}"
+  ],
+  "autoLoadEntities": true,
+  "migrationsRun": true,
+  "migrations": [
+    "/Users/jairo/Documents/Fuentes/NodeJS/NestJS/myblog/dist/migration/**/*{.ts,.js}"
+  ],
+  "migrationsTableName": "migrations_typeorm",
+  "cli": {
+    "migrationsDir": "src/migration"
+  },
+  "synchronize": false,
+  "logging": true,
+  "logger": "file"
+}
