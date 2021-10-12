@@ -34,13 +34,8 @@ export class PostService {
     return await this.postRepository.save(post);
   }
   async editOne(id: number, dto: EditPostDto, author?: User) {
-    console.log('dto: ', dto, ' Author: ', author);
-
     const post = await this.getById(id, author);
-    console.log('post: ', post);
-
     const editedPost = Object.assign(post, dto);
-    console.log('editedPost: ', editedPost);
     // @ts-ignore
     return await this.postRepository.save(editedPost);
   }
